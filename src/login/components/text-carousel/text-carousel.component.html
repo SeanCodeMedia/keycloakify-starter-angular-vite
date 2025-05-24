@@ -1,0 +1,14 @@
+<!-- eslint-disable prettier/prettier -->
+<div class="carousel" *ngIf="carouselTexts.length > 0">
+  <div class="carousel-item">{{ currentText }}</div>
+</div>
+
+<!-- Dot indicators -->
+<div class="dots">
+  <span
+    *ngFor="let text of carouselTexts; let i = index"
+    class="dot"
+    [ngClass]="{ active: currentIndex === i }"
+    (click)="goToSlide(i)"
+  ></span>
+</div>
