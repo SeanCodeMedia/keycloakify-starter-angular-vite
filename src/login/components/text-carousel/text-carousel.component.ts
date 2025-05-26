@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable @angular-eslint/use-lifecycle-interface */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -6,8 +8,8 @@
 /* eslint-disable prettier/prettier */
 
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Subject , interval, Subscription} from 'rxjs';
 @Component({
     selector: 'app-text-carousel',
     imports: [CommonModule],
@@ -18,7 +20,7 @@ import { Subject } from 'rxjs';
 export class TextCarouselComponent {
 
   private destroy$ = new Subject<void>();
-
+  timerSub: Subscription | undefined;
 
   carouselTexts: string[] = [
     "Simplifying Property Management for Everyone",
@@ -30,41 +32,46 @@ export class TextCarouselComponent {
   currentText: string = this.carouselTexts[0];
   intervalId: any;
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
-    this.intervalId = this.startCarousel();
+    this.startCarousel();
+
   }
 
   ngOnDestroy(): void {
 
-    clearInterval(this.intervalId);
-    this.intervalId = null;
-    console.log("Carousel interval cleared on destroy.");
+    if (this.timerSub) {
+      this.timerSub.unsubscribe();
+    }
 
   }
 
   startCarousel(): any {
-    //   return setInterval(() => {
-    //   this.nextSlide();
-    //   console.log("CALLED...")
-    // }, 5000); // Change text every 3 seconds
+    this.timerSub = interval(5000).subscribe(() => {
+      this.nextSlide();
+     });
+
   }
 
   nextSlide(): void {
+    console.log("Next slide called");
     this.currentIndex = (this.currentIndex + 1) % this.carouselTexts.length;
     this.currentText = this.carouselTexts[this.currentIndex];
+    this.cdr.detectChanges(); // Trigger change detection
   }
 
   goToSlide(index: number): void {
     this.currentIndex = index;
     this.currentText = this.carouselTexts[this.currentIndex];
-    this.resetInterval(); // Reset timer when manually navigating
+
   }
 
   resetInterval(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.startCarousel();
+    if (this.timerSub) {
+      this.timerSub.unsubscribe();
     }
+    this.startCarousel();
   }
 
 

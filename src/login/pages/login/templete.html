@@ -1,0 +1,50 @@
+<!-- eslint-disable prettier/prettier -->
+
+<ng-template #socialProvidersNode  style="display:none !important;">
+  @let realm = kcContext.realm;
+  @let social = kcContext.social;
+  @if (!!realm?.password && !!social?.providers?.length) {
+    <div
+      id="kc-social-providers"
+      [kcClass]="'kcFormSocialAccountSectionClass'"
+    >
+      <hr />
+      <h2>{{ i18n.msgStr('identity-provider-login-label') }}</h2>
+      <ul
+        [kcClass]="{
+          kcFormSocialAccountListClass: true,
+          kcFormSocialAccountListGridClass: (social?.providers?.length ?? 0) > 3,
+        }"
+      >
+        @for (provider of social?.providers; track provider.alias; let idx = $index) {
+          <li>
+            <a
+              type="button"
+              [id]="provider.alias"
+              [kcClass]="{
+                kcFormSocialAccountListButtonClass: true,
+                kcFormSocialAccountGridItem: (social?.providers?.length ?? 0) > 3,
+              }"
+              [href]="provider.loginUrl"
+            >
+              @if (provider.iconClasses) {
+                <i
+                  aria-hidden="true"
+                  [ngClass]="provider.iconClasses"
+                  [kcClass]="'kcCommonLogoIdP'"
+                ></i>
+              }
+              <span
+                [ngClass]="{
+                  'kc-social-icon-text': provider.iconClasses,
+                }"
+                [kcClass]="'kcFormSocialAccountNameClass'"
+                [innerHTML]="provider.displayName | kcSanitize: 'html'"
+              ></span>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</ng-template>

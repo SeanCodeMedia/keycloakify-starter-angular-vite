@@ -37,7 +37,7 @@ export async function getKcPage(pageId: KcContext['pageId']): Promise<KcPage> {
         TemplateComponent,
         UserProfileFormFieldsComponent,
         doMakeUserConfirmPassword,
-        doUseDefaultCss: false, // Ensure default CSS is disabled for other pages
+        doUseDefaultCss: true, // Ensure default CSS is disabled for other pages
         classes,
       };
   }

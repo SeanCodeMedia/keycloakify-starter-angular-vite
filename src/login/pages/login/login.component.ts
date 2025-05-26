@@ -22,14 +22,14 @@ import { LOGIN_I18N } from '@keycloakify/angular/login/tokens/i18n';
 import { KC_LOGIN_CONTEXT } from '@keycloakify/angular/login/tokens/kc-context';
 import type { ClassKey } from 'keycloakify/login/lib/kcClsx';
 import { TextCarouselComponent } from "../../components/text-carousel/text-carousel.component";
-
-
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @Component({
   selector: 'kc-login',
   styleUrl: 'login.component.css',
   templateUrl: 'login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [KcClassDirective, AsyncPipe, KcSanitizePipe, PasswordWrapperComponent, NgClass, CommonModule, TextCarouselComponent],
+  imports: [KcClassDirective, AsyncPipe, KcSanitizePipe, MatCheckboxModule,  PasswordWrapperComponent, NgClass, CommonModule, TextCarouselComponent, MatInputModule],
   providers: [
     {
       provide: ComponentReference,
